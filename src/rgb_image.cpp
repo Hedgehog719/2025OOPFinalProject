@@ -146,7 +146,9 @@ void RGBImage::ApplyAllFilters(uint8_t options) {
 void RGBImage::EncryptMessage(const string &message){
     if(ImageEncryption::EncodeMessage( pixels, w,  h, message)){
         cout<<"success Encrypt!!!"<<endl;
-    }
+    }else{
+        cout<<"Encrypt Failed. SOmething bad happened. Maybe message is too long.\nMessage may not be fully stored."<<endl;
+    } 
 }
 string RGBImage::DecryptMessage() const {
     string ms;

@@ -40,9 +40,9 @@ Image_Processing: main.cpp $(OBJS) $(OBJDIR)/data_loader.o
 	$(VECHO) "	LD\t$@\n"
 	$(Q)$(CXX) $(WARNINGS) $(CXXFLAGS) $(OPTFLAGS) $^ -o $@ $(LINKER)
 
-Data_Loader_Example: data_loader_demo.cpp $(OBJDIR)/data_loader.o
-	$(VECHO) "	LD\t$@\n"
-	$(Q)$(CXX) $(WARNINGS) $(CXXFLAGS) $(OPTFLAGS) $^ -o $@ $(LINKER)
+#Data_Loader_Example: data_loader_demo.cpp $(OBJDIR)/data_loader.o
+	#$(VECHO) "	LD\t$@\n"
+	#$(Q)$(CXX) $(WARNINGS) $(CXXFLAGS) $(OPTFLAGS) $^ -o $@ $(LINKER)
 
 # Include generated dependency files
 -include $(DEPS)

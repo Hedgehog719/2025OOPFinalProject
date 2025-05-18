@@ -25,6 +25,7 @@ public:
     void ApplyAllFilters(uint8_t) override;
     bool IsSameAs(const Image& other)const;
     void EncryptMessage(const string &message)override;
+    void Disp_small();
     string DecryptMessage() const override;
 
     
