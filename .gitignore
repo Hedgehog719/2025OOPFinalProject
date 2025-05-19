@@ -3,3 +3,4 @@
 third-party/
 Image-Folder/GreatTest.png
 .nfs*
+Image-Folder/.nfs*
