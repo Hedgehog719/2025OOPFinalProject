@@ -2,3 +2,4 @@
 *.d
 third-party/
 Image-Folder/GreatTest.png
+.nfs*
