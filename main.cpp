@@ -20,144 +20,7 @@
 #define CASE_EIGHT  0b10000000  // ³½²´
 
 using namespace std;
-/*
-class SHA256 {
-public:
-    SHA256();
-    string hash(const string &data);
 
-private:
-    static const uint32_t k[64];
-    uint32_t h[8];
-    vector<uint32_t> preprocess(const string &data);
-    void transform(const vector<uint32_t> &blocks);
-    static uint32_t rotr(uint32_t x, uint32_t n);
-    static uint32_t choose(uint32_t e, uint32_t f, uint32_t g);
-    static uint32_t majority(uint32_t a, uint32_t b, uint32_t c);
-    static uint32_t sig0(uint32_t x);
-    static uint32_t sig1(uint32_t x);
-};
-
-const uint32_t SHA256::k[64] = {
-    0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
-    0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
-    0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
-    0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
-    0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc,
-    0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
-    0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7,
-    0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
-    0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13,
-    0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
-    0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3,
-    0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
-    0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5,
-    0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
-    0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
-    0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
-};
-
-SHA256::SHA256() {
-    h[0] = 0x6a09e667;
-    h[1] = 0xbb67ae85;
-    h[2] = 0x3c6ef372;
-    h[3] = 0xa54ff53a;
-    h[4] = 0x510e527f;
-    h[5] = 0x9b05688c;
-    h[6] = 0x1f83d9ab;
-    h[7] = 0x5be0cd19;
-}
-
-uint32_t SHA256::rotr(uint32_t x, uint32_t n) {
-    return (x >> n) | (x << (32 - n));
-}
-
-uint32_t SHA256::choose(uint32_t e, uint32_t f, uint32_t g) {
-    return (e & f) ^ (~e & g);
-}
-
-uint32_t SHA256::majority(uint32_t a, uint32_t b, uint32_t c) {
-    return (a & b) ^ (a & c) ^ (b & c);
-}
-
-uint32_t SHA256::sig0(uint32_t x) {
-    return rotr(x, 2) ^ rotr(x, 13) ^ rotr(x, 22);
-}
-
-uint32_t SHA256::sig1(uint32_t x) {
-    return rotr(x, 6) ^ rotr(x, 11) ^ rotr(x, 25);
-}
-
-vector<uint32_t> SHA256::preprocess(const string &data) {
-    size_t bit_len = data.size() * 8;
-    vector<uint8_t> buffer(data.begin(), data.end());
-    buffer.push_back(0x80);
-
-    while ((buffer.size() * 8) % 512 != 448) {
-        buffer.push_back(0x00);
-    }
-
-    for (int i = 7; i >= 0; --i) {
-        buffer.push_back((bit_len >> (i * 8)) & 0xFF);
-    }
-
-    vector<uint32_t> blocks(buffer.size() / 4);
-    for (size_t i = 0; i < blocks.size(); ++i) {
-        blocks[i] = (buffer[4 * i] << 24) |
-                    (buffer[4 * i + 1] << 16) |
-                    (buffer[4 * i + 2] << 8) |
-                    (buffer[4 * i + 3]);
-    }
-    return blocks;
-}
-
-void SHA256::transform(const vector<uint32_t> &blocks) {
-    uint32_t w[64];
-    for (size_t i = 0; i < blocks.size(); i += 16) {
-        for (int t = 0; t < 16; ++t)
-            w[t] = blocks[i + t];
-
-        for (int t = 16; t < 64; ++t)
-            w[t] = sig1(w[t - 2]) + w[t - 7] + sig0(w[t - 15]) + w[t - 16];
-
-        uint32_t a = h[0], b = h[1], c = h[2], d = h[3];
-        uint32_t e = h[4], f = h[5], g = h[6], h0 = h[7];
-
-        for (int t = 0; t < 64; ++t) {
-            uint32_t T1 = h0 + sig1(e) + choose(e, f, g) + k[t] + w[t];
-            uint32_t T2 = sig0(a) + majority(a, b, c);
-            h0 = g;
-            g = f;
-            f = e;
-            e = d + T1;
-            d = c;
-            c = b;
-            b = a;
-            a = T1 + T2;
-        }
-
-        h[0] += a;
-        h[1] += b;
-        h[2] += c;
-        h[3] += d;
-        h[4] += e;
-        h[5] += f;
-        h[6] += g;
-        h[7] += h0;
-    }
-}
-
-string SHA256::hash(const string &data) {
-    vector<uint32_t> blocks = preprocess(data);
-    transform(blocks);
-
-    stringstream ss;
-    for (int i = 0; i < 8; ++i) {
-        ss << hex << setw(8) << setfill('0') << h[i];
-    }
-    return ss.str();
-}
-*/
 long long getLongLongInput(const std::string& prompt) {
     long long value;
     while (true) {
@@ -262,21 +125,7 @@ void RSADecrypt(std::string &s, long long d_key, long long n_mod) {
 
 
 int main(int argc, char *argv[]){
- /*
-    Image *img1 = new GrayImage();
-    img1->LoadImage("Image-Folder/lena.jpg");
-    img1->DumpImage("img1.jpg");
-    img1->Display_X_Server();
-    img1->Display_CMD();
-    
-   
 
-    Image *img2 = new RGBImage();
-    img2->LoadImage("Image-Folder/lena.jpg");
-    img2->DumpImage("img2.jpg");
-    img2->Display_X_Server();
-    img2->Display_CMD();
-*/
     // some bit field filter design driven code here
 
     // some photo mosaic driven code here
@@ -427,11 +276,11 @@ int main(int argc, char *argv[]){
 
 
         int d=256;
-        while(!(d<=3&&d>=0)||d==256){
+        while(!(d<=4&&d>=0)||d==256){
             cout<<"==============================\n";
             cout<<" Do you want to display img? \n";
             cout<<"------------------------------\n";
-            cout<<"0.None\n1.ASCII\n2.X_Server\n3.Both\n";
+            cout<<"0. None\n1. ASCII\n2. X_Server\n3. Both\n4. Preview\n";
             cout<<"==============================\n";
             cin >>display;
             d=display-'0';
@@ -450,6 +299,9 @@ int main(int argc, char *argv[]){
                     tempimg->Display_ASCII();
                     cout<<"Image showed. make sure to close it before next move."<<endl;
                     tempimg->Display_X_Server();
+                    break;
+                case 4:
+                    tempimg->Disp_small();
                     break;
                 default:
                     cout<<"wrong input, again."<<endl;
@@ -588,11 +440,11 @@ int main(int argc, char *argv[]){
             if(savename!="n")img3->DumpImage("Image-Folder/"+savename+".png");
             
             d=256;
-            while(!(d<=3&&d>=0)||d==256){
+            while(!(d<=4&&d>=0)||d==256){
                 cout<<"==============================\n";
                 cout<<" Do you want to display img? \n";
                 cout<<"------------------------------\n";
-                cout<<"0.None\n1.ASCII\n2.X_Server\n3.Both\n";
+                cout<<"0. None\n1. ASCII\n2. X_Server\n3. Both\n4. Preview\n";
                 cout<<"==============================\n";
                 cin >>display;
                 d=display-'0';
@@ -611,6 +463,9 @@ int main(int argc, char *argv[]){
                         img3->Display_ASCII();
                         cout<<"Image showed. make sure to close it before next move."<<endl;
                         img3->Display_X_Server();
+                        break;
+                    case 4:
+                        img3->Disp_small();
                         break;
                     default:
                         cout<<"wrong input, again."<<endl;
