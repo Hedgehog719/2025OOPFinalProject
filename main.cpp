@@ -601,16 +601,16 @@ int main(int argc, char *argv[]){
                         
                         break;
                     case 1:
-                        tempimg->Display_ASCII();
+                        img3->Display_ASCII();
                         break;
                     case 2:
                         cout<<"Image showed. make sure to close it before next move."<<endl;
-                        tempimg->Display_X_Server();
+                        img3->Display_X_Server();
                         break;
                     case 3:
-                        tempimg->Display_ASCII();
+                        img3->Display_ASCII();
                         cout<<"Image showed. make sure to close it before next move."<<endl;
-                        tempimg->Display_X_Server();
+                        img3->Display_X_Server();
                         break;
                     default:
                         cout<<"wrong input, again."<<endl;
@@ -734,16 +734,16 @@ int main(int argc, char *argv[]){
                         
                         break;
                     case 1:
-                        tempimg->Display_ASCII();
+                        img3->Display_ASCII();
                         break;
                     case 2:
                         cout<<"Image showed. make sure to close it before next move."<<endl;
-                        tempimg->Display_X_Server();
+                        img3->Display_X_Server();
                         break;
                     case 3:
-                        tempimg->Display_ASCII();
+                        img3->Display_ASCII();
                         cout<<"Image showed. make sure to close it before next move."<<endl;
-                        tempimg->Display_X_Server();
+                        img3->Display_X_Server();
                         break;
                     default:
                         cout<<"wrong input, again."<<endl;
