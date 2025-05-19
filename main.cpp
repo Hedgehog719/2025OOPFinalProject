@@ -303,21 +303,23 @@ int main(int argc, char *argv[]){
         if(imgchoose==0){
             for(size_t i=0; i<filenames.size(); i++){
                 //GrayImage *gg=new GrayImage();
-                std::string filename = filenames[i];
+                string filename = filenames[i];
     
-                std::string lower = filename;
-                std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+                string lower = filename;
+                transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
                 if (lower.size() >= 4 && (lower.substr(lower.size() - 4) == ".jpg" || lower.substr(lower.size() - 4) == ".png")) 
                 {
                     cout << i + 1 << ". " << filenames[i] << endl;
-                    GrayImage gg;
+                    RGBImage gg;
                     gg.LoadImage(filenames[i]);
                     gg.Disp_small();
                 }
             }
             cout<<filenames.size()+1<<". Exit Program"<<endl;
+            cout << "Please enter the number of image file or 0 for show all: ";
             cin>>imgchoose;
         }
+        
         if(imgchoose==filenames.size()+1){
         cout<<"Exit!"<<endl;
             break;
@@ -349,6 +351,23 @@ int main(int argc, char *argv[]){
         else{
             cout<<"Invalid choice!"<<endl;
         }
+        char display;
+        
+        cout<<"==============================\n";
+        cout<<" Display small img? (y/n)\n";
+        cout<<"==============================\n";
+        cin >>display;
+        switch (display) {
+            case 'n': 
+                break;
+            case 'y':
+                img3->Disp_small();;
+                break;
+            default:
+                cout<<"wrong input, again."<<endl;
+                break;
+        }
+        
 
 
         uint8_t options = 0b00000000;
@@ -406,7 +425,7 @@ int main(int argc, char *argv[]){
 
         tempimg->ApplyAllFilters(options);
 
-        char display;
+
         int d=256;
         while(!(d<=3&&d>=0)||d==256){
             cout<<"==============================\n";
@@ -561,35 +580,42 @@ int main(int argc, char *argv[]){
             
             img3->EncryptMessage(message); 
             cout << "Message encrypted into filtered image." << endl;
-            cout<<"Enter saveimg/\"filename\".png, default imgg.png or \"n\" for not saving: ";
+            cout<<"Enter Image-Folder/\"filename\".png, default imgg.png or \"n\" for not saving: ";
             cin>>savename;
             if(savename.empty()){
                 savename = "imgg";
             }
-            if(savename!="n")img3->DumpImage("saveimg/"+savename+".png");
-
-            cout<<"==============================\n";
-            cout<<" Do you want to display img? \n";
-            cout<<"------------------------------\n";
-            cout<<"0.None\n1.ASCII\n2.X_Server\n3.Both\n";
-            cout<<"==============================\n";
-            cin >>display;
-            switch (display) {
-                case 0:
-                    
-                    break;
-                case 1:
-                    tempimg->Display_ASCII();
-                    break;
-                case 2:
-                    tempimg->Display_X_Server();
-                    break;
-                case 3:
-                    tempimg->Display_ASCII();
-                    tempimg->Display_X_Server();
-                    break;
-                default:
-                    break;
+            if(savename!="n")img3->DumpImage("Image-Folder/"+savename+".png");
+            
+            d=256;
+            while(!(d<=3&&d>=0)||d==256){
+                cout<<"==============================\n";
+                cout<<" Do you want to display img? \n";
+                cout<<"------------------------------\n";
+                cout<<"0.None\n1.ASCII\n2.X_Server\n3.Both\n";
+                cout<<"==============================\n";
+                cin >>display;
+                d=display-'0';
+                switch (d) {
+                    case 0:
+                        
+                        break;
+                    case 1:
+                        tempimg->Display_ASCII();
+                        break;
+                    case 2:
+                        cout<<"Image showed. make sure to close it before next move."<<endl;
+                        tempimg->Display_X_Server();
+                        break;
+                    case 3:
+                        tempimg->Display_ASCII();
+                        cout<<"Image showed. make sure to close it before next move."<<endl;
+                        tempimg->Display_X_Server();
+                        break;
+                    default:
+                        cout<<"wrong input, again."<<endl;
+                        break;
+                }
             }
             
         }else if (yn == 'o' || yn == 'O') {
@@ -687,35 +713,42 @@ int main(int argc, char *argv[]){
             char len = static_cast<char>(message.length());
             message.insert(0, 1, len);
             img3->EncryptMessage(message);
-            cout << "Message encrypted into original image." << endl;
-            cout<<"Enter filename,default imgg: ";
+            cout << "Message encrypted into filtered image." << endl;
+            cout<<"Enter Image-Folder/\"filename\".png, default imgg.png or \"n\" for not saving: ";
             cin>>savename;
             if(savename.empty()){
                 savename = "imgg";
             }
-            img3->DumpImage("saveimg/"+savename+".png");
-            cout<<"==============================\n";
-            cout<<" Do you want to display img? \n";
-            cout<<"------------------------------\n";
-            cout<<"0.None\n1.ASCII\n2.X_Server\n3.Both\n";
-            cout<<"==============================\n";
-            cin >>display;
-            switch (display) {
-                case 0:
-                    
-                    break;
-                case 1:
-                    tempimg->Display_ASCII();
-                    break;
-                case 2:
-                    tempimg->Display_X_Server();
-                    break;
-                case 3:
-                    tempimg->Display_ASCII();
-                    tempimg->Display_X_Server();
-                    break;
-                default:
-                    break;
+            img3->DumpImage("Image-Folder/"+savename+".png");
+            d=256;
+            while(!(d<=3&&d>=0)||d==256){
+                cout<<"==============================\n";
+                cout<<" Do you want to display img? \n";
+                cout<<"------------------------------\n";
+                cout<<"0.None\n1.ASCII\n2.X_Server\n3.Both\n";
+                cout<<"==============================\n";
+                cin >>display;
+                d=display-'0';
+                switch (d) {
+                    case 0:
+                        
+                        break;
+                    case 1:
+                        tempimg->Display_ASCII();
+                        break;
+                    case 2:
+                        cout<<"Image showed. make sure to close it before next move."<<endl;
+                        tempimg->Display_X_Server();
+                        break;
+                    case 3:
+                        tempimg->Display_ASCII();
+                        cout<<"Image showed. make sure to close it before next move."<<endl;
+                        tempimg->Display_X_Server();
+                        break;
+                    default:
+                        cout<<"wrong input, again."<<endl;
+                        break;
+                }
             }
             /*Image *imgt = new GrayImage();
             imgt->LoadImage("saveimg/"+savename+".png");

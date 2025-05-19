@@ -27,6 +27,7 @@ public:
     virtual void ApplyAllFilters(uint8_t)=0;
     virtual void EncryptMessage(const string &message) = 0;
     virtual string DecryptMessage() const = 0;
+    virtual void Disp_small() =0;
 
     int get_width() const { return w; }
     int get_height() const { return h; }

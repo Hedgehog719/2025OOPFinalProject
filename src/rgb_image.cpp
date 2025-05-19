@@ -23,6 +23,84 @@ RGBImage::RGBImage(int width, int height, int ***pixels) : Image(), pixels(pixel
     this->w = width;
     this->h = height;
 }
+void RGBImage::Disp_small() {
+    int neww, newh, sz;
+
+    if (w > h) {
+        if (w < 40) {
+            Display_ASCII();  // 原圖顯示
+            return;
+        }
+        sz = w / 40;
+        neww = w / sz;
+        newh = h / sz;
+    } else {
+        if (h < 40) {
+            Display_ASCII();  // 原圖顯示
+            return;
+        }
+        sz = h / 40;
+        neww = w / sz;
+        newh = h / sz;
+    }
+
+    // 建立 RGB 縮圖像素陣列
+    int*** small_pixels = new int**[newh];
+    for (int i = 0; i < newh; i++) {
+        small_pixels[i] = new int*[neww];
+        for (int j = 0; j < neww; j++) {
+            small_pixels[i][j] = new int[3]{0, 0, 0};  // 初始化 R,G,B = 0
+            int count = 0;
+            for (int y = 0; y < sz; y++) {
+                for (int x = 0; x < sz; x++) {
+                    int src_y = i * sz + y;
+                    int src_x = j * sz + x;
+                    if (src_y < h && src_x < w) {
+                        for (int c = 0; c < 3; c++) {
+                            small_pixels[i][j][c] += pixels[src_y][src_x][c];
+                        }
+                        count++;
+                    }
+                }
+            }
+            if (count > 0) {
+                for (int c = 0; c < 3; c++) {
+                    small_pixels[i][j][c] /= count;  // 求平均
+                }
+            }
+        }
+    }
+
+    // 顯示 RGB 縮圖（以 ASCII 彩色方塊）
+    string shades = " .:-=+*#%@";
+    for (int y = 0; y < newh; y++) {
+        for (int x = 0; x < neww; x++) {
+            int r = small_pixels[y][x][0];
+            int g = small_pixels[y][x][1];
+            int b = small_pixels[y][x][2];
+            int gray = (r + g + b) / 3;
+            int index = (gray * shades.length()) / 256;
+            if (index >= (int)shades.length()) index = shades.length() - 1;
+
+            cout << "\033[48;2;" << r << ";" << g << ";" << b << "m"
+                 << "\033[38;2;" << r << ";" << g << ";" << b << "m"
+                 << shades[index] << shades[index]
+                 << "\033[0m";
+        }
+        cout << endl;
+    }
+
+    // 清除記憶體
+    for (int i = 0; i < newh; i++) {
+        for (int j = 0; j < neww; j++) {
+            delete[] small_pixels[i][j];
+        }
+        delete[] small_pixels[i];
+    }
+    delete[] small_pixels;
+}
+
+
 /*RGBImage& RGBImage::operator=(RGBImage &img) {
     if (this != &img) {
         // 釋放原本 pixels 的記憶體

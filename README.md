@@ -71,7 +71,7 @@
    * 透過 `LoadImage()` 函數讀取影像
    * 使用 `Display_ASCII()` 可以在終端機上顯示影像(大圖形建議縮小視窗字元大小)
    * 使用 `Display_X_Server()` 可以在MobaXterm跳出視窗顯示圖片
-   * 灰階圖片使用 `Disp_small()` 顯示最常邊=40pixels的縮圖
+   * 圖片使用 `Disp_small()` 顯示最長邊=40pixels的縮圖
 
 2. 濾鏡應用
 
@@ -91,6 +91,67 @@
    
 
 ## 操作方法
+   執行
+
+##檔案結構
+   ```sh
+      2024OOP001/FinalProject> tree -L 3
+   .
+   └── 2025_NYCU_OOPFP_Image_Processing
+      ├── Data-Loader
+      │   ├── data_loader.cpp
+      │   └── data_loader.h
+      ├── Image-Folder
+      ├── Image_Processing
+      ├── inc
+      │   ├── bit_field_filter.h
+      │   ├── gray_image.h
+      │   ├── image_encryption.h
+      │   ├── image.h
+      │   └── rgb_image.h
+      ├── LICENSE
+      ├── main.cpp
+      ├── Makefile
+      ├── obj
+      │   ├── bit_field_filter.d
+      │   ├── bit_field_filter.o
+      │   ├── data_loader.d
+      │   ├── data_loader.o
+      │   ├── gray_image.d
+      │   ├── gray_image.o
+      │   ├── image.d
+      │   ├── image_encryption.d
+      │   ├── image_encryption.o
+      │   ├── image.o
+      │   ├── rgb_image.d
+      │   └── rgb_image.o
+      ├── README.md
+      ├── saveimg
+      │   ├── 123.png
+      │   ├── b1en.png
+      │   ├── b1.png
+      │   ├── bosn.png
+      │   ├── en1.png
+      │   ├── en22.png
+      │   ├── enbird.png
+      │   └── n.png
+      ├── scripts
+      │   └── clone_env.sh
+      ├── src
+      │   ├── bit_field_filter.cpp
+      │   ├── gray_image.cpp
+      │   ├── image.cpp
+      │   ├── image_encryption.cpp
+      │   └── rgb_image.cpp
+      ├── third-party
+      │   ├── catimg
+      │   ├── CImg
+      │   └── libjpeg
+      └── vgcore.2185
+
+   12 directories, 52 files
+   ```
+   
 
 ## 作者
 
