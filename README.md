@@ -79,7 +79,7 @@
 
 3. 隱寫術操作
 
-   * 使用 `encrypt()` 與 `decrypt()` 進行隱寫術操作
+   * 使用 `EncryptMessage()` 與 `DecryptMessage()` 呼叫 `ImageEncryption::EncodeMessage(string message)` `string ImageEncryption::DecodeMessage(pixels,w,h)` 進行隱寫術操作
    * 如果圖片大小不足會顯示
    ```
    Encrypt Failed. SOmething bad happened. Maybe message is too long.\nMessage may not be fully stored.
@@ -87,8 +87,7 @@
    需要更大解析度圖片或更短訊息。
 
 4. 訊息加解密
-
-   * 支援 RSA、Caesar、XOR 的訊息二重加密，
+   * 在main()中使用，支援 RSA、Caesar、XOR 的訊息二重加密。
    
 
 ## 操作方法
