@@ -262,7 +262,7 @@
    ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/Image-Folder/cnliu2gray.png)
 
    或是這張RGB：
-   ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/Image-Folder/bz.png)
+   ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/Image-Folder/bz.jpg)
 
    會變為：
    ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/Image-Folder/cnliu2gray_new.png)
