@@ -10,10 +10,12 @@
 
    * 支援灰階 (gray) 與 RGB (rgb) 影像格式
    * 八種不同濾鏡效果：包括增加亮度、色彩反轉、降噪、色度門檻處理、銳化、馬賽克、水平翻轉、**魚眼**效果
+   * 灰階小圖組大圖功能：以十種分類("airplane","automobile","bird","cat","deer","dog","frog","horse","ship","truck")中每個分類6000張32*32的圖片以灰階亮度與結構判斷比較，結合成新的圖片。
 
 2. **隱寫 (Steganography)**
 
-   * 支援 PNG LSB 加解密 (pngLSB decrypt)
+   * 支援 PNG LSB 加解密
+   * 支援 PNG DCT 加解密
 
 3. **訊息加解密**
 
@@ -221,6 +223,47 @@
    ```
    ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/scr2.png)
 
+   **灰階圖片** 在濾鏡選擇後可以進行小圖組大圖功能：
+   ```sh
+      ======================
+      = SMALL IMAGE MOSAIC =
+      ======================
+      WATCH OUT!small image mosaic will make image GRAY!!
+      DO YOU WANT TO USE SMALL IMAGE MOSAIC???????????? (y/n) y
+      === Mosaic using Small Images ===
+      Choose a collection:
+      1. airplane
+      2. automobile
+      3. bird
+      4. cat
+      5. deer
+      6. dog
+      7. frog
+      8. horse
+      9. ship
+      10. truck
+      2
+      Loading valid images from database...
+      Loaded valid_db size: 6000
+      ==============================
+       Do you want to display img?
+      ------------------------------
+      0. None
+      1. ASCII
+      2. X_Server
+      3. Both
+      4. Preview(not recommended here)
+      ==============================
+      2
+      Image showed. make sure to close it before next move.
+      Enter Image-Folder/"filename".png, default imgg.png or "n" for not saving: cnliu2gray_new
+   ```
+   可以選擇小圖分類後展示與儲存圖片，注意圖片越大程式執行時間越久，圖片解析度越高效果越明顯。
+   舉例使用劉建男教授的照片以automobile進行組合：
+   ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/Image-Folder/cnliu2gray.png)
+   會變為：
+   ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/Image-Folder/cnliu2gray_new.png)
+   
    接下來可以選擇是否要儲存檔案以及後續加密 
    ```sh
       Enter Image-Folder/"filename".png, default imgg.png or "n" for not saving: n
@@ -320,48 +363,96 @@
 
 ## 檔案結構
    ```sh
-   > tree -L 3
-   .
-   └── 2025_NYCU_OOPFP_Image_Processing
-      ├── Data-Loader
-      │   ├── data_loader.cpp
-      │   └── data_loader.h
-      ├── Image-Folder
-      ├── 1-1.jpg
-      │   ├── 1-2.jpg
-      │   ├── 2-1.jpg
-      │   ├── 2-2.jpg
-      │   ├── 3-1.jpg
-      │   ├── 3-2.jpg
-      │   ├── 4-1.jpg
-      │   ├── 4-2.jpg
-      │   ├── GreatView.jpg
-      │   ├── lena.jpg
-      │   ├── sailboat.jpg
-      │   ├── truck.png
-      ├── Image_Processing
-      ├── inc
-      │   ├── bit_field_filter.h
-      │   ├── gray_image.h
-      │   ├── image_encryption.h
-      │   ├── image.h
-      │   └── rgb_image.h
-      ├── LICENSE
-      ├── main.cpp
-      ├── Makefile
-      ├── obj
-      ├── README.md
-      ├── scripts
-      │   └── clone_env.sh
-      ├── src
-      │   ├── bit_field_filter.cpp
-      │   ├── gray_image.cpp
-      │   ├── image.cpp
-      │   ├── image_encryption.cpp
-      │   └── rgb_image.cpp
-      └── vgcore.2185
+   tree -L 3
+.
+├── 111511164.tar
+└── 2025_NYCU_OOPFP_Image_Processing
+    ├── Data-Loader
+    │   ├── data_loader.cpp
+    │   └── data_loader.h
+    ├── githublink.txt
+    ├── Image-Folder
+    │   ├── 1-1.jpg
+    │   ├── 1-2.jpg
+    │   ├── 2-1.jpg
+    │   ├── 2-2.jpg
+    │   ├── 23444.png
+    │   ├── 3-1.jpg
+    │   ├── 3-2.jpg
+    │   ├── 4-1.jpg
+    │   ├── 4-2.jpg
+    │   ├── cnliu2gray.png
+    │   ├── cnliu2.jpg
+    │   ├── cnliu.jpg
+    │   ├── en1.png
+    │   ├── GreatBySmall.png
+    │   ├── GreatView.jpg
+    │   ├── lena.jpg
+    │   ├── liu_small.png
+    │   ├── n.png
+    │   ├── or1.png
+    │   ├── \003.png
+    │   ├── sailboat.jpg
+    │   ├── test.png
+    │   ├── truck.png
+    │   └── 下載.jpg
+    ├── Image_Processing
+    ├── inc
+    │   ├── bit_field_filter.h
+    │   ├── gray_image.h
+    │   ├── image_encryption.h
+    │   ├── image.h
+    │   └── rgb_image.h
+    ├── LICENSE
+    ├── main.cpp
+    ├── Makefile
+    ├── obj
+    │   ├── bit_field_filter.d
+    │   ├── bit_field_filter.o
+    │   ├── data_loader.d
+    │   ├── data_loader.o
+    │   ├── gray_image.d
+    │   ├── gray_image.o
+    │   ├── image.d
+    │   ├── image_encryption.d
+    │   ├── image_encryption.o
+    │   ├── image.o
+    │   ├── rgb_image.d
+    │   └── rgb_image.o
+    ├── README.md
+    ├── saveimg
+    │   ├── 123.png
+    │   ├── b1en.png
+    │   ├── b1.png
+    │   ├── bosn.png
+    │   ├── en1.png
+    │   ├── en22.png
+    │   ├── enbird.png
+    │   └── n.png
+    ├── scr1.png
+    ├── scr2.png
+    ├── scripts
+    │   └── clone_env.sh
+    ├── SmallImg
+    │   ├── gray.py
+    │   ├── gray_small
+    │   ├── out_json
+    │   └── sort.py
+    ├── src
+    │   ├── bit_field_filter.cpp
+    │   ├── gray_image.cpp
+    │   ├── image.cpp
+    │   ├── image_encryption.cpp
+    │   └── rgb_image.cpp
+    ├── third-party
+    │   ├── catimg
+    │   ├── CImg
+    │   └── libjpeg
+    ├── vgcore.2185
+    └── vgcore.32459
 
-   12 directories, 52 files
+15 directories, 70 files
+
    ```
    
 ## 已知狀況
