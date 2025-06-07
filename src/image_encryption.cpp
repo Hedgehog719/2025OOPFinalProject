@@ -51,17 +51,15 @@ void idct8x8(double input[BLOCK][BLOCK], int output[BLOCK][BLOCK]) {
 
 // 嵌入一個字元到 DCT block
 static const int COEFFICIENT_INDICES[8][2] = {
-    // 推薦的中頻係數（常見於 JPEG 壓縮中的較不重要但非零的係數）
-    {1, 1}, // 位於 (0,0) 斜下方的第二個係數
-    {0, 2}, // 次低頻，水平方向
-    {2, 0}, // 次低頻，垂直方向
-    {2, 1}, // 再往外一些
-    {1, 2}, // 再往外一些
-    {3, 0}, // 更低頻一些，但仍承載部分結構
-    {0, 3}, // 更低頻一些，但仍承載部分結構
-    {2, 2}  // 典型的中頻係數
-    // 其他可能的選擇：
-    // {1,3}, {3,1}, {0,4}, {4,0} 等
+    // 另一組常見的中頻係數，可能在某些圖像上表現更好
+    {1, 1},
+    {0, 2},
+    {2, 0},
+    {1, 3}, // 相比 {2,1} 和 {1,2} 稍微高一點的中頻
+    {3, 1},
+    {0, 4}, // 再高一點的頻率
+    {4, 0},
+    {2, 2}
 };
 long long force_closest_LSD(double original_val, int target_LSD) {
     long long rounded_val = static_cast<long long>(std::floor(original_val + 0.5));
@@ -340,6 +338,8 @@ bool ImageEncryption::DCTEncodeMessage(int **pixels, int w, int h, const string 
 }
 string ImageEncryption::DCTDecodeMessage(int **pixels, int w, int h) {
     string result;
+    int length=-1;
+    
     for (int i = 0; i <= h - BLOCK; i += BLOCK) {
         for (int j = 0; j <= w - BLOCK; j += BLOCK) {
             int block[BLOCK][BLOCK];
@@ -350,11 +350,18 @@ string ImageEncryption::DCTDecodeMessage(int **pixels, int w, int h) {
             double dct[BLOCK][BLOCK];
             dct8x8(block, dct);
             char ch = extract_char(dct);
+            if(length==-1){
+                length=ch;
+                continue;
+            }
+            length--;
 
             if (ch == '\0')  // 終止條件：讀到 null terminator 表示訊息結束
                 return result;
 
             result += ch;
+            if (length==0)  
+                return result;
         }
     }
     return result;  // 若沒遇到 '\0'，回傳目前結果
@@ -404,6 +411,7 @@ bool ImageEncryption::DCTEncodeMessage(int ***pixels, int w, int h, const string
 
 string ImageEncryption::DCTDecodeMessage(int ***pixels, int w, int h) {
     string result;
+    int length=-1;
     int colorChannel = 0;
     for (int colorChannel = 0; colorChannel < 3; ++colorChannel) {
         for (int i = 0; i <= h - BLOCK; i += BLOCK) {
@@ -419,8 +427,15 @@ string ImageEncryption::DCTDecodeMessage(int ***pixels, int w, int h) {
                 dct8x8(block, dct);
     
                 char ch = extract_char(dct);
+                if(length==-1){
+                    length=ch;
+                    continue;
+                }
+                length--;
                 if (ch == '\0') return result;  // 偵測結尾
                 result += ch;
+                if (length==0)  
+                    return result;
             }
         }
     }

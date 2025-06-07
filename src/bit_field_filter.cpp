@@ -319,18 +319,12 @@ void BitFieldFilter::FishEye(int ***pixels, int w, int h) {
             // 從原始圖片 (pixels) 中，在計算出的輸入座標 (x_in, y_in) 處採樣像素資料，
             // 並將其複製到暫存緩衝區 (temp_pixels) 的當前輸出座標 (x_out, y_out) 處。
             for (int c = 0; c < num_channels; ++c) {
-                 // 透過 int*** 簽章存取 pixels[y][x][c]
-                 // pixels[y_in][x_in] 取得指向通道資料開頭的 int* 指標
-                 // *(pixels[y_in][x_in] + c) 存取第 c 個通道的值
                 *(temp_pixels[y_out][x_out] + c) = *(pixels[y_in][x_in] + c);
             }
-            // --- 採樣結束 ---
         }
     }
-    // --- 魚眼特效計算結束 ---
 
 
-    // --- 將處理後的像素從暫存緩衝區複製回原始 pixels 陣列 ---
     for (int y = 0; y < h; ++y) {
         for (int x = 0; x < w; ++x) {
             for (int c = 0; c < num_channels; ++c) {
@@ -339,21 +333,17 @@ void BitFieldFilter::FishEye(int ***pixels, int w, int h) {
             }
         }
     }
-    // --- 複製完成 ---
-
-
-    // --- 釋放暫存緩衝區記憶體 ---
+    
     for (int y = 0; y < h; ++y) {
-        if (temp_pixels[y] != nullptr) { // 檢查指標是否有效，儘管在分配時已盡力確保
+        if (temp_pixels[y] != nullptr) {
             for (int x = 0; x < w; ++x) {
-                delete[] temp_pixels[y][x]; // 刪除通道陣列
+                delete[] temp_pixels[y][x];
             }
-            delete[] temp_pixels[y]; // 刪除像素指標陣列
+            delete[] temp_pixels[y];
         }
     }
-    delete[] temp_pixels; // 刪除行指標陣列
-    temp_pixels = nullptr; // 設定為 nullptr 是個好習慣
-    // --- 暫存緩衝區釋放完成 ---
+    delete[] temp_pixels;
+    temp_pixels = nullptr; 
 }
 
 

@@ -223,12 +223,11 @@
    ```
    ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/scr2.png)
 
-   **灰階圖片** 在濾鏡選擇後可以進行小圖組大圖功能：
+   在濾鏡選擇後可以進行小圖組大圖功能：
    ```sh
       ======================
       = SMALL IMAGE MOSAIC =
       ======================
-      WATCH OUT!small image mosaic will make image GRAY!!
       DO YOU WANT TO USE SMALL IMAGE MOSAIC???????????? (y/n) y
       === Mosaic using Small Images ===
       Choose a collection:
@@ -261,9 +260,16 @@
    可以選擇小圖分類後展示與儲存圖片，注意圖片越大程式執行時間越久，圖片解析度越高效果越明顯。
    舉例使用劉建男教授的照片以automobile進行組合：
    ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/Image-Folder/cnliu2gray.png)
-   
+
+   或是這張RGB：
+   ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/Image-Folder/bz.png)
+
    會變為：
    ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/Image-Folder/cnliu2gray_new.png)
+
+   和：
+   ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/Image-Folder/bzt1.png)
+
    
    接下來可以選擇是否要儲存檔案以及後續加密 
    ```sh

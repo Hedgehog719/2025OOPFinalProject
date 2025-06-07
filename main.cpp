@@ -175,6 +175,7 @@ int main(int argc, char *argv[]){
             break;
         }
         filename=filenames[imgchoose-1];
+        cout<<"\nCurrent Image: "<<filename<<endl;
         cout<<endl;
         cout<<"========================"<<endl;
         cout<<"= CHOOSE YOUR IMG TYPE ="<<endl;
@@ -318,12 +319,11 @@ int main(int argc, char *argv[]){
         if(savename!="n")tempimg->DumpImage("Image-Folder/"+savename+".png");
         
         cout<<endl;
-        if(colorchoice==1){
+        if(true){
             cout<<"======================"<<endl;
             cout<<"= SMALL IMAGE MOSAIC ="<<endl;
             cout<<"======================"<<endl;
-            cout<<"WATCH OUT!small image mosaic will make image GRAY!!"<<endl;
-            cout<<"DO YOU WANT TO USE SMALL IMAGE MOSAIC???????????? (y/n) ";
+            cout<<"DO YOU WANT TO USE SMALL IMAGE MOSAIC?(y/n) ";
             char smlimg='x';
             cin>>smlimg;
             while(smlimg!='y'&&smlimg!='n'){
@@ -670,7 +670,7 @@ int main(int argc, char *argv[]){
             if(savename.empty()){
                 savename = "imgg";
             }
-            img3->DumpImage("Image-Folder/"+savename+".png");
+            if(savename!="n")img3->DumpImage("Image-Folder/"+savename+".png");
             d=256;
             while(!(d<=3&&d>=0)||d==256){
                 cout<<"==============================\n";
@@ -823,7 +823,7 @@ int main(int argc, char *argv[]){
                     CaesarDecrypt(demessage,caesar_shift_key);
                 break;
                 case 'n':
-                    cout<<"Nothing to do with your message."<<endl;
+                    cout<<"Nothing to do with your message. Enter to Continue."<<endl;
                     cin.ignore();
                 break;
             }
