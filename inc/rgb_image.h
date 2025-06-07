@@ -23,6 +23,9 @@ public:
     void EncryptMessage(const string &message) override;
     void Disp_small()override;
     string DecryptMessage() const override;
+    void DCTEncryptMessage(const string &message) override;
+    string DCTDecryptMessage()const override;
+    void small()override;
 };
 
 #endif

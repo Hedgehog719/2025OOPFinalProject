@@ -15,6 +15,14 @@ public:
 
     // 從 RGB 圖像解碼出訊息
     static string DecodeMessage(int ***pixels, int w, int h);
+    //DCT 加密
+    static bool DCTEncodeMessage(int **pixels, int w, int h, const string &message);
+    //DCT 解密
+    static string DCTDecodeMessage(int **pixels, int w, int h);
+    //DCT 加密RGB
+    static bool DCTEncodeMessage(int ***pixels, int w, int h, const string &message);
+    //DCT 解密RGB
+    static string DCTDecodeMessage(int ***pixels, int w, int h);
 };
 
 #endif

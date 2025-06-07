@@ -11,13 +11,13 @@
 #include <bitset>
 #include <sstream>
 
-#define CASE_ONE    0b00000001  // ¼W«G
-#define CASE_TWO    0b00000010  // ¤ÏÂà
-#define CASE_THREE  0b00000100  // ­°¾¸
-#define CASE_FOUR   0b00001000  // ªùÂe¤Æ
-#define CASE_FIVE   0b00010000  // ¾U¤Æ
-#define CASE_SEVEN  0b01000000  // ¤ô¥­Â½Âà
-#define CASE_EIGHT  0b10000000  // ³½²´
+#define CASE_ONE    0b00000001  // ï¿½Wï¿½G
+#define CASE_TWO    0b00000010  // ï¿½ï¿½ï¿½ï¿½
+#define CASE_THREE  0b00000100  // ï¿½ï¿½ï¿½ï¿½
+#define CASE_FOUR   0b00001000  // ï¿½ï¿½ï¿½eï¿½ï¿½
+#define CASE_FIVE   0b00010000  // ï¿½Uï¿½ï¿½
+#define CASE_SEVEN  0b01000000  // ï¿½ï¿½ï¿½ï¿½Â½ï¿½ï¿½
+#define CASE_EIGHT  0b10000000  // ï¿½ï¿½ï¿½ï¿½
 
 using namespace std;
 
@@ -96,7 +96,7 @@ void RSAEncrypt(std::string &s, long long e_key, long long n_mod) {
     }
     if (n_mod <= 255 && n_mod > 1) {
     } else if (n_mod <=1) {
-         std::cerr << "RSA ¼Ò¼Æ n ¤Ó¤p¡I±N¤£°õ¦æ RSA ¥[±K¡C\n";
+         std::cerr << "RSA ï¿½Ò¼ï¿½ n ï¿½Ó¤pï¿½Iï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ RSA ï¿½[ï¿½Kï¿½C\n";
          return;
     }
 
@@ -138,13 +138,13 @@ int main(int argc, char *argv[]){
         cout<<"\033[5m\033[1;32m               ______________\n         ,===:'.,            `-._\n              `:.`---.__         `-._\n                `:.     `--.         `.\n                  \\.        `.         `.\n          (,,(,    \\.         `.   ____,-`.,\n       (,'     `/   \\.   ,--.___`.'\n   ,  ,'  ,--.  `,   \\.;'         `\n    `{o, {    \\  :    \\;\n      V,,'    /  /    //\n      |;;    /  ,' ,-//.    ,---.      ,\n      \\;'   /  ,' /  _  \\  /  _  \\   ,'/\n            \\   `'  / \\  `'  / \\  `.' /\n             `.___,'   `.__,'   `.__,'  \n\033[0m"<<endl;
         cout<<"''''''''''''''''''''''''''''''''''''''''''''''"<<endl;
         Data_Loader data_loader;
-        cout<<"0. Show All Small Images"<<endl;
+        cout<<"0. Show All Small Images\n"<<endl;
         data_loader.List_Directory("Image-Folder", filenames); 
         string filename;
         int imgchoose;
         for(size_t i=0; i<filenames.size(); i++){
             //GrayImage *gg=new GrayImage();
-            cout<<i+1<<". "<<filenames[i]<<endl;
+            cout<<i+1<<". "<<filenames[i]<<endl<<endl;
         }
         cout<<filenames.size()+1<<". Exit Program"<<endl;
         cout << "Please enter the number of image file or 0 for show all: ";
@@ -162,6 +162,7 @@ int main(int argc, char *argv[]){
                     RGBImage gg;
                     gg.LoadImage(filenames[i]);
                     gg.Disp_small();
+                    gg.Display_CMD();
                 }
             }
             cout<<filenames.size()+1<<". Exit Program"<<endl;
@@ -170,7 +171,7 @@ int main(int argc, char *argv[]){
         }
         
         if(imgchoose==filenames.size()+1){
-        cout<<"Exit!"<<endl;
+            cout<<"Exit!"<<endl;
             break;
         }
         filename=filenames[imgchoose-1];
@@ -182,24 +183,25 @@ int main(int argc, char *argv[]){
         cout<<"2. RGB Image"<<endl;
         cout<<"0. Exit"<<endl;
         cout<<"========================"<<endl;
-        int choice;
+        int colorchoice;
         cout<<"Please enter your choice: ";
-        cin>>choice;
-        if(choice==1){
+        cin>>colorchoice;
+        if(colorchoice==1){
             img3 = new GrayImage();
             img3->LoadImage(filename);
         }
-        else if(choice==2){
+        else if(colorchoice==2){
             img3 = new RGBImage();
             img3->LoadImage(filename);
         }
-        else if(choice==0){
+        else if(colorchoice==0){
             cout<<"Exit!"<<endl;
             break;
         }
         else{
             cout<<"Invalid choice!"<<endl;
         }
+        
         char display;
         
         cout<<"==============================\n";
@@ -285,7 +287,7 @@ int main(int argc, char *argv[]){
             cin >>display;
             d=display-'0';
             switch (d) {
-                case 0:
+                case 0:case 'n'-'0':
                     
                     break;
                 case 1:
@@ -308,16 +310,72 @@ int main(int argc, char *argv[]){
                     break;
             }
         }
-        
         cout<<"Enter Image-Folder/\"filename\".png, default imgg.png or \"n\" for not saving: ";
         cin>>savename;
         if(savename.empty()){
             savename = "imgg";
         }
         if(savename!="n")tempimg->DumpImage("Image-Folder/"+savename+".png");
-        ////////////////////////////////////////////////////
-        //Àx¦sÀÉ®×Á×§K³QÂÐ»\++±K/////////////////////////////
-        ///////////////////////////////////////////////////
+        
+        cout<<endl;
+        if(colorchoice==1){
+            cout<<"======================"<<endl;
+            cout<<"= SMALL IMAGE MOSAIC ="<<endl;
+            cout<<"======================"<<endl;
+            cout<<"WATCH OUT!small image mosaic will make image GRAY!!"<<endl;
+            cout<<"DO YOU WANT TO USE SMALL IMAGE MOSAIC???????????? (y/n) ";
+            char smlimg='x';
+            cin>>smlimg;
+            while(smlimg!='y'&&smlimg!='n'){
+                cout<<"????????????????again????????????????????"<<endl;
+                cin>>smlimg;
+            }
+            if(smlimg=='y'){
+                tempimg->small();
+                
+                int d=256;
+                while(!(d<=4&&d>=0)||d==256){
+                    cout<<"==============================\n";
+                    cout<<" Do you want to display img? \n";
+                    cout<<"------------------------------\n";
+                    cout<<"0. None\n1. ASCII\n2. X_Server\n3. Both\n4. Preview(not recommended here)\n";
+                    cout<<"==============================\n";
+                    cin >>display;
+                    d=display-'0';
+                    switch (d) {
+                        case 0:case 'n'-'0':
+                            
+                            break;
+                        case 1:
+                            tempimg->Display_ASCII();
+                            break;
+                        case 2:
+                            cout<<"Image showed. make sure to close it before next move."<<endl;
+                            tempimg->Display_X_Server();
+                            break;
+                        case 3:
+                            tempimg->Display_ASCII();
+                            cout<<"Image showed. make sure to close it before next move."<<endl;
+                            tempimg->Display_X_Server();
+                            break;
+                        case 4:
+                            tempimg->Disp_small();
+                            break;
+                        default:
+                            cout<<"wrong input, again."<<endl;
+                            break;
+                    }
+                }
+                cout<<"Enter Image-Folder/\"filename\".png, default imgg.png or \"n\" for not saving: ";
+                cin>>savename;
+                if(savename.empty()){
+                    savename = "imgg";
+                }
+                if(savename!="n")tempimg->DumpImage("Image-Folder/"+savename+".png");
+            }
+        }
+        
+            
         cout<<endl;
         cout<<"======================"<<endl;
         cout<<"= ENCRYPT YOUR IMAGE ="<<endl;
@@ -425,12 +483,34 @@ int main(int argc, char *argv[]){
                     cout<<"Nothing to do with your message."<<endl;
                 break;
             }
-            cout<<"Encrpting Image: "<<filename<<endl<<"with message: "<<message<<endl;
+            bool useDCT=false;
+            cout<<"\nChoose your Img hidden method\n1.  LSB \n2. DCTEncrypt\n:"<<flush;
+            char imgtemp='.';
+            cin>>imgtemp;
+            while(imgtemp!='1'&&imgtemp!='2'){
+                cout<<"wrong input"<<endl;
+                cin>>imgtemp;
+            }
+            if(imgtemp=='2')useDCT=true;
+                
+            /*img3->Display_CMD();
+            img3->Display_X_Server();
+            img3->DCTEncryptMessage("henry is good good test!!!!!"); 
+            cout<<img3->DCTDecryptMessage()<<endl;
+            img3->Display_X_Server();*/
             
+            
+            cout<<"Encrpting Image: "<<filename<<endl<<"with message: "<<message<<endl<<"by method ";
+            if(useDCT)cout<<"DCT"<<endl;
+            else cout<<"LSB"<<endl;
+
             char len = static_cast<char>(message.length());
             message.insert(0, 1, len);
-            
-            img3->EncryptMessage(message); 
+            if(!useDCT)img3->EncryptMessage(message);
+            else img3->DCTEncryptMessage(message);
+            //img3->DCTEncryptMessage(message);
+            //cout<<img3->DCTDecryptMessage()<<endl;
+ 
             cout << "Message encrypted into filtered image." << endl;
             cout<<"Enter Image-Folder/\"filename\".png, default imgg.png or \"n\" for not saving: ";
             cin>>savename;
@@ -564,11 +644,27 @@ int main(int argc, char *argv[]){
                     cout<<"Nothing to do with your message."<<endl;
                 break;
             }
-            cout<<"Encrpting Image: "<<filename<<endl<<"with message: "<<message<<endl;
+            
+            bool useDCT=false;
+            cout<<"\nChoose your Img hidden method\n1. LSB\n2. DCTEncrypt\n:"<<flush;
+            char imgtemp='.';
+            cin>>imgtemp;
+            while(imgtemp!='1'&&imgtemp!='2'){
+                cout<<"wrong input"<<endl;
+                cin>>imgtemp;
+            }
+            if(imgtemp=='2')useDCT=true;
+            
+            cout<<"Encrpting Image: "<<filename<<endl<<"with message: "<<message<<endl<<"by method ";
+            if(useDCT)cout<<"DCT"<<endl;
+            else cout<<"LSB"<<endl;
+            
             char len = static_cast<char>(message.length());
             message.insert(0, 1, len);
-            img3->EncryptMessage(message);
-            cout << "Message encrypted into filtered image." << endl;
+            if(!useDCT)img3->EncryptMessage(message);
+            else img3->DCTEncryptMessage(message);
+            //img3->DCTEncryptMessage(message); 
+            cout << "Message encrypted into unfiltered image." << endl;
             cout<<"Enter Image-Folder/\"filename\".png, default imgg.png or \"n\" for not saving: ";
             cin>>savename;
             if(savename.empty()){
@@ -640,18 +736,27 @@ int main(int argc, char *argv[]){
             */
             Image *img4 =img3->Clone();
             string demessage;
-            demessage = img4->DecryptMessage();
+            bool useDCT=false;
+            cout<<"\nChoose your Img hidden method\n1. LSB \n2. DCTEncrypt\n:"<<flush;
+            char imgtemp='.';
+            cin>>imgtemp;
+            while(imgtemp!='1'&&imgtemp!='2'){
+                cout<<"wrong input"<<endl;
+                cin>>imgtemp;
+            }
+            if(imgtemp=='2')useDCT=true;
+            
+            if(!useDCT)demessage = img4->DecryptMessage();
+            else demessage = img4->DCTDecryptMessage();
             
             if (demessage.empty()) {
                 cout << "No hidden message found or image is not encrypted." << endl;
             } else {
                 cout << "Decoded message: " <<endl<< demessage << endl;
             }
-            
-            
 
             cout<<"==========================================\n";
-            cout<<" Choose Your String Encrypt Type(if any):\n";
+            cout<<" Choose Your String Encrypt Type:\n";
             cout<<"------------------------------------\n";
             cout<<"1.RSA\n2.XOR\n3.CaesarChiper\n4.None\n";
             cout<<"==========================================\n";
@@ -719,6 +824,7 @@ int main(int argc, char *argv[]){
                 break;
                 case 'n':
                     cout<<"Nothing to do with your message."<<endl;
+                    cin.ignore();
                 break;
             }
             if(enct!='n')cout<<"Decrypt message:"<<demessage<<endl;
@@ -726,6 +832,7 @@ int main(int argc, char *argv[]){
             
         }
         cin.ignore();
+        
         delete img3;
  
     }

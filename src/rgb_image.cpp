@@ -1,6 +1,12 @@
 // RGBImage.cpp
 #include "rgb_image.h"
 #include<iostream>
+#include<sys/ioctl.h>
+#include <string>
+#include "gray_image.h"
+void RGBImage::small(){
+    cout<<"error: smallmosaic is not implemented for RGBImage."<<endl;
+}
 bool RGBImage::IsSameAs(const Image& other) const {
     const RGBImage* rgb = dynamic_cast<const RGBImage*>(&other);
     if (!rgb || rgb->w != w || rgb->h != h) return false;
@@ -24,32 +30,35 @@ RGBImage::RGBImage(int width, int height, int ***pixels) : Image(), pixels(pixel
     this->h = height;
 }
 void RGBImage::Disp_small() {
-    int neww, newh, sz;
+    int neww, newh;
+    double sz;
+    struct winsize ws;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ,&ws);
 
     if (w > h) {
-        if (w < 40) {
-            Display_ASCII();  // ­ì¹ÏÅã¥Ü
+        if (w < ws.ws_col/2) {
+            Display_ASCII();  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             return;
         }
-        sz = w / 40;
+        sz = w / (ws.ws_col/2.0);
         neww = w / sz;
         newh = h / sz;
     } else {
-        if (h < 40) {
-            Display_ASCII();  // ­ì¹ÏÅã¥Ü
+        if (h < ws.ws_row) {
+            Display_ASCII();  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             return;
         }
-        sz = h / 40;
+        sz = 1.0*h / ws.ws_row;
         neww = w / sz;
         newh = h / sz;
     }
 
-    // «Ø¥ß RGB ÁY¹Ï¹³¯À°}¦C
+    // ï¿½Ø¥ï¿½ RGB ï¿½Yï¿½Ï¹ï¿½ï¿½ï¿½ï¿½}ï¿½C
     int*** small_pixels = new int**[newh];
     for (int i = 0; i < newh; i++) {
         small_pixels[i] = new int*[neww];
         for (int j = 0; j < neww; j++) {
-            small_pixels[i][j] = new int[3]{0, 0, 0};  // ªì©l¤Æ R,G,B = 0
+            small_pixels[i][j] = new int[3]{0, 0, 0};  // ï¿½ï¿½lï¿½ï¿½ R,G,B = 0
             int count = 0;
             for (int y = 0; y < sz; y++) {
                 for (int x = 0; x < sz; x++) {
@@ -65,13 +74,13 @@ void RGBImage::Disp_small() {
             }
             if (count > 0) {
                 for (int c = 0; c < 3; c++) {
-                    small_pixels[i][j][c] /= count;  // ¨D¥­§¡
+                    small_pixels[i][j][c] /= count;  // ï¿½Dï¿½ï¿½ï¿½ï¿½
                 }
             }
         }
     }
 
-    // Åã¥Ü RGB ÁY¹Ï¡]¥H ASCII ±m¦â¤è¶ô¡^
+    // ï¿½ï¿½ï¿½ RGB ï¿½Yï¿½Ï¡]ï¿½H ASCII ï¿½mï¿½ï¿½ï¿½ï¿½ï¿½^
     string shades = " .:-=+*#%@";
     for (int y = 0; y < newh; y++) {
         for (int x = 0; x < neww; x++) {
@@ -90,7 +99,7 @@ void RGBImage::Disp_small() {
         cout << endl;
     }
 
-    // ²M°£°O¾ÐÅé
+    // ï¿½Mï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½
     for (int i = 0; i < newh; i++) {
         for (int j = 0; j < neww; j++) {
             delete[] small_pixels[i][j];
@@ -103,21 +112,21 @@ void RGBImage::Disp_small() {
 
 /*RGBImage& RGBImage::operator=(RGBImage &img) {
     if (this != &img) {
-        // ÄÀ©ñ­ì¥» pixels ªº°O¾ÐÅé
+        // ï¿½ï¿½ï¿½ï¿½ì¥» pixels ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½
         if (pixels) {
             for (int i = 0; i < h; ++i) {
                 for (int j = 0; j < w; ++j) {
-                    delete[] pixels[i][j]; // ²Ä¤T¼h¡]RGB¡^
+                    delete[] pixels[i][j]; // ï¿½Ä¤Tï¿½hï¿½]RGBï¿½^
                 }
-                delete[] pixels[i]; // ²Ä¤G¼h
+                delete[] pixels[i]; // ï¿½Ä¤Gï¿½h
             }
-            delete[] pixels; // ²Ä¤@¼h
+            delete[] pixels; // ï¿½Ä¤@ï¿½h
         }
 
         w = img.w;
         h = img.h;
 
-        // ¤À°t·s°O¾ÐÅé
+        // ï¿½ï¿½ï¿½tï¿½sï¿½Oï¿½ï¿½ï¿½ï¿½
         pixels = new int**[h];
         for (int i = 0; i < h; ++i) {
             pixels[i] = new int*[w];
@@ -148,26 +157,26 @@ RGBImage* RGBImage::Clone() const {
     return newImg;
 }
 RGBImage& RGBImage::operator=(Image& img) {
-    // ¹Á¸Õ±N img Âà´«¬° RGBImage ª«¥ó
+    // ï¿½ï¿½ï¿½Õ±N img ï¿½à´«ï¿½ï¿½ RGBImage ï¿½ï¿½ï¿½ï¿½
     const RGBImage* rgbImg = dynamic_cast<RGBImage*>(&img);
-    if (rgbImg) {  // ¦pªG img ½T¹ê¬O RGBImage Ãþ«¬
+    if (rgbImg) {  // ï¿½pï¿½G img ï¿½Tï¿½ï¿½O RGBImage ï¿½ï¿½ï¿½ï¿½
         if (this != rgbImg) {
-            // ÄÀ©ñ­ì¥» pixels ªº°O¾ÐÅé
+            // ï¿½ï¿½ï¿½ï¿½ì¥» pixels ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½
             if (pixels) {
                 for (int i = 0; i < h; ++i) {
                     for (int j = 0; j < w; ++j) {
-                        delete[] pixels[i][j];  // ÄÀ©ñ²Ä¤T¼h¡]RGB¡^
+                        delete[] pixels[i][j];  // ï¿½ï¿½ï¿½ï¿½Ä¤Tï¿½hï¿½]RGBï¿½^
                     }
-                    delete[] pixels[i];  // ÄÀ©ñ²Ä¤G¼h
+                    delete[] pixels[i];  // ï¿½ï¿½ï¿½ï¿½Ä¤Gï¿½h
                 }
-                delete[] pixels;  // ÄÀ©ñ²Ä¤@¼h
+                delete[] pixels;  // ï¿½ï¿½ï¿½ï¿½Ä¤@ï¿½h
             }
 
-            // ½Æ»s·s¸ê®Æ
+            // ï¿½Æ»sï¿½sï¿½ï¿½ï¿½
             w = rgbImg->w;
             h = rgbImg->h;
 
-            // ¤À°t·s°O¾ÐÅé
+            // ï¿½ï¿½ï¿½tï¿½sï¿½Oï¿½ï¿½ï¿½ï¿½
             pixels = new int**[h];
             for (int i = 0; i < h; ++i) {
                 pixels[i] = new int*[w];
@@ -231,6 +240,19 @@ void RGBImage::EncryptMessage(const string &message){
 string RGBImage::DecryptMessage() const {
     string ms;
     ms=ImageEncryption::DecodeMessage( pixels,  w,  h);
+    return ms;
+
+}
+void RGBImage::DCTEncryptMessage(const string &message){
+    if(ImageEncryption::DCTEncodeMessage( pixels, w,  h, message)){
+        cout<<"success Encrypt!!!"<<endl;
+    }else{
+        cout<<"Encrypt Failed. SOmething bad happened. Maybe message is too long.\nMessage may not be fully stored."<<endl;
+    } 
+}
+string RGBImage::DCTDecryptMessage() const {
+    string ms;
+    ms=ImageEncryption::DCTDecodeMessage( pixels,  w,  h);
     return ms;
 
 }

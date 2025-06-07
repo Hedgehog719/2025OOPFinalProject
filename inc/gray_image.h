@@ -2,6 +2,7 @@
 #define _GRAY_IMAGE_H_
 
 #include "image.h"
+#
 using namespace std;
 
 class GrayImage : public Image{
@@ -27,9 +28,9 @@ public:
     void EncryptMessage(const string &message)override;
     void Disp_small()override;
     string DecryptMessage() const override;
-
-    
-    // Add any additional methods you need
+    void DCTEncryptMessage(const string &message) override;
+    string DCTDecryptMessage()const override;
+    void small()override;
 
 };
 

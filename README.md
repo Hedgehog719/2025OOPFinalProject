@@ -234,6 +234,9 @@
    可以選擇加密原始圖片(o 未濾鏡)或濾鏡後圖片(y)或是結束此次圖片編輯繼續下次回圈，或是跳過加密過程進入解密圖片過程。
 
    如果繼續就可以輸入加密資料、選擇加密方式：
+   圖片加密有兩種方式: 1.  LSB 2. DCTEncrypt
+   字串加密有三種方式: 1.RSA 2.XOR 3.CaesarChiper
+   依照自己所需選擇
    ```sh
       ======================
       = ENCRYPT YOUR IMAGE =
@@ -253,14 +256,24 @@
       3
       Do Caesar Chiper on your message...
       Caesar shift initial number?: 1
+      Choose your Img hidden method
+      1.  LSB
+      2. DCTEncrypt
+      :2
       Encrpting Image: Image-Folder/3-2.jpg
       with message: Uijt jt uif tfdsfu.
+      by method DCT
       success Encrypt!!!
       Message encrypted into filtered image.
       Enter Image-Folder/"filename".png, default imgg.png or "n" for not saving:
    ```
    可以選擇儲存檔案名稱，以便後續解密。
    注意此處若選擇RSA加密，請使用者盡量使用程式推薦的質數(實作展示用)，以免加密後長度超過上限或是無法儲存所有資料。
+
+   同加密方法
+   圖片加密有兩種方式: 1.  LSB 2. DCTEncrypt
+   字串加密有三種方式: 1.RSA 2.XOR 3.CaesarChiper
+   依照自己所需選擇
 
    解密部分：
    ```sh
@@ -281,6 +294,11 @@
 
       Decode Image(y)? Exit(e)? Skip(s)?(y|e|s)
       y
+      
+      Choose your Img hidden method
+      1. LSB
+      2. DCTEncrypt
+      :2
       Decoded message:
       Uijt jt uif tfdsfu.
       ==========================================
