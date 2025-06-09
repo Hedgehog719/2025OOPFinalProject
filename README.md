@@ -258,7 +258,7 @@
       Enter Image-Folder/"filename".png, default imgg.png or "n" for not saving: cnliu2gray_new
    ```
    可以選擇小圖分類後展示與儲存圖片，注意圖片越大程式執行時間越久，圖片解析度越高效果越明顯。
-
+   小圖組大圖在小於32pixel的區塊會被忽略(算法是(int)width/32)
    或是這張RGB：
    ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/Image-Folder/bz.jpg)
 
