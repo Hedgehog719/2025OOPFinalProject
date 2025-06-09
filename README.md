@@ -10,7 +10,7 @@
 
    * 支援灰階 (gray) 與 RGB (rgb) 影像格式
    * 八種不同濾鏡效果：包括增加亮度、色彩反轉、降噪、色度門檻處理、銳化、馬賽克、水平翻轉、**魚眼**效果
-   * 灰階小圖組大圖功能：以十種分類("airplane","automobile","bird","cat","deer","dog","frog","horse","ship","truck")中每個分類6000張32*32的圖片以灰階亮度與結構判斷比較，結合成新的圖片。
+   * 灰階小圖組大圖功能：以十種分類("airplane","automobile","bird","cat","deer","dog","frog","horse","ship","truck")中每個分類6000張32*32的圖片以灰階亮度與結構判斷比較，結合成新的圖片。小圖組大圖在小於32pixel的區塊會被忽略(算法是blocksize=(int)width/32)
 
 2. **隱寫 (Steganography)**
 
