@@ -258,14 +258,10 @@
       Enter Image-Folder/"filename".png, default imgg.png or "n" for not saving: cnliu2gray_new
    ```
    可以選擇小圖分類後展示與儲存圖片，注意圖片越大程式執行時間越久，圖片解析度越高效果越明顯。
-   舉例使用劉建男教授的照片以automobile進行組合：
-   ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/Image-Folder/cnliu2gray.png)
 
    或是這張RGB：
    ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/Image-Folder/bz.jpg)
 
-   會變為：
-   ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/Image-Folder/cnliu2gray_new.png)
 
    和：
    ![image](https://github.com/Hedgehog719/2024OOPFinalProject/blob/main/Image-Folder/bzt1.png)
